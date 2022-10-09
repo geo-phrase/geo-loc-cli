@@ -1,5 +1,5 @@
 {
-  "name": "geo-loc-cli",
+  "name": "@geo-phrase/geo-loc-cli",
   "version": "0.1.0",
   "description": "Geo location trnascoder in CLI",
   "scripts": {
