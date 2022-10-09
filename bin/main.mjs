@@ -104,7 +104,7 @@ switch (option) {
     print(gw);
     break;
   case 'coordinates':
-    const [lat, lon] = options.coordinates.split(/\w/).map(n => +n);
+    const [lat, lon] = options.coordinates;
     gw.bits = 44;
     gw.latitude = lat;
     gw.longitude = lon;
