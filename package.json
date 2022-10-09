@@ -6,9 +6,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "geo-loc-cli": "./bin/main.js"
+    "geo-loc-cli": "./bin/main.mjs"
   },
   "preferGlobal": true,
   "author": "Grzegorz Kućmierz",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/geo-phrase/geo-loc-cli#readme",
+  "dependencies": {
+    "command-line-args": "^5.2.1",
+    "command-line-usage": "^6.1.3"
+  }
 }
