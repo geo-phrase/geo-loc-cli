@@ -2,6 +2,7 @@
 
 import commandLineArgs from 'command-line-args';
 import commandLineUsage from 'command-line-usage';
+import GeoWords from '@geo-phrase/geo-words';
 
 const optionDefinitions = [
   {
@@ -23,7 +24,7 @@ const optionDefinitions = [
     description: 'Longitude coordinate - must be provided with latitude',
   },
   {
-    name: 'coords',
+    name: 'coordinates',
     alias: 'c',
     type: Number,
     multiple: true,
@@ -48,6 +49,12 @@ const optionDefinitions = [
     type: String,
     description: 'Hex works same as number but written in hex',
   },
+  {
+    name: 'wordlist',
+    alias: 'l',
+    type: Boolean,
+    description: 'Display wordlist used in transcoding',
+  },
 ];
 
 const sections = [
@@ -55,25 +62,69 @@ const sections = [
     header: 'Geo Location CLI',
     content: 'Converts coordinates to words or single number both ways'
   },
-  // {
-  //   header: 'Synopsis',
-  //   content: [
-  //     '$ example [{bold --timeout} {underline ms}] {bold --src} {underline file} ...',
-  //     '$ example {bold --help}'
-  //   ]
-  // },
   {
     header: 'Options',
     optionList: optionDefinitions,
   }
 ];
 
+const print = gw => {
+  const details = gw.locDetails;
+  console.log({
+    number: gw.num,
+    hex: gw.hex,
+    words: gw.words,
+    latitude: gw.latitude,
+    longitude: gw.longitude,
+    latitudeRange: details.lat.prec,
+    longitudeRange: details.lon.prec,
+    bitsPrecision: gw.bits.length,
+    coordinates: `${gw.latitude} ${gw.longitude}`,
+  });
+};
+
 const options = commandLineArgs(optionDefinitions);
-const usage = commandLineUsage(sections);
 
-if (options.help || Object.keys(options).length === 0) {
-  console.log(usage);
-} else {
+console.log('input: ', options);
 
+const gw = GeoWords();
+
+const option = Object.keys(options)[0] ?? 'help';
+switch (option) {
+  case 'help':
+    console.log(commandLineUsage(sections));
+    break;
+  case 'latitude':
+  case 'longitude':
+    const isErr = typeof options.latitude === 'undefined' || typeof options.longitude === 'undefined';
+    if (isErr) throw Error('Latitude and longitude must be provided both');
+    gw.bits = 44;
+    gw.latitude = options.latitude;
+    gw.longitude = options.longitude;
+    print(gw);
+    break;
+  case 'coordinates':
+    const [lat, lon] = options.coordinates.split(/\w/).map(n => +n);
+    gw.bits = 44;
+    gw.latitude = lat;
+    gw.longitude = lon;
+    print(gw);
+    break;
+  case 'words':
+    gw.words = options.words;
+    print(gw);
+    break;
+  case 'number':
+    gw.num = options.number;
+    print(gw);
+    break;
+  case 'hex':
+    gw.hex = options.hex;
+    print(gw);
+    break;
+  case 'wordlist':
+    GeoWords.wordlist.map((word, i) => {
+      console.log(`${i} ${word}`);
+    });
+    break;
 }
-
