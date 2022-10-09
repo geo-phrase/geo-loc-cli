@@ -2,10 +2,13 @@
   "name": "geo-loc-cli",
   "version": "0.1.0",
   "description": "Geo location trnascoder in CLI",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "geo-loc-cli": "./bin/main.js"
+  },
+  "preferGlobal": true,
   "author": "Grzegorz Kućmierz",
   "license": "MIT"
 }
