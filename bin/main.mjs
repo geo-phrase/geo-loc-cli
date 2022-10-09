@@ -73,12 +73,12 @@ const print = gw => {
   console.log({
     number: gw.num,
     hex: gw.hex,
-    words: gw.words,
+    words: gw.words.join(' '),
     latitude: gw.latitude,
     longitude: gw.longitude,
     latitudeRange: details.lat.prec,
     longitudeRange: details.lon.prec,
-    bitsPrecision: gw.bits.length,
+    bitsPrecision: gw.bits.length + 1,
     coordinates: `${gw.latitude} ${gw.longitude}`,
   });
 };
